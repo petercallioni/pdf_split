@@ -1,0 +1,45 @@
+import tkinter
+from tkinter import filedialog
+
+
+class GUI:
+    def __init__(self):
+        self.window = None
+        self.source_pdf_frame = None
+        self.source_pdf_label = None
+        self.source_pdf_entry = None
+        self.source_pdf_button = None
+
+    def create_gui(self):
+        self.window = tkinter.Tk()
+        self.window.title = "PDF Splitter"
+        self.window.geometry("400x400")
+
+        self.source_pdf_frame = tkinter.Frame(self.window, bg="green", padx=5, pady=5)
+
+        self.source_pdf_label = tkinter.Label(master=self.source_pdf_frame, text="Source PDF:")
+        self.source_pdf_label.grid(column=0, row=0)
+
+        self.source_pdf_entry = tkinter.Entry(master=self.source_pdf_frame)
+        self.source_pdf_entry.grid(column=1, row=0, sticky="nsew")
+
+        self.source_pdf_button = tkinter.Button(master=self.source_pdf_frame, text="Find", command=self.select_file)
+        self.source_pdf_button.grid(column=2, row=0)
+
+        self.source_pdf_frame.grid_columnconfigure(0, weight=0, pad=5)
+        self.source_pdf_frame.grid_columnconfigure(1, weight=1, pad=5)
+        self.source_pdf_frame.grid_columnconfigure(2, weight=0, pad=5)
+
+        self.source_pdf_frame.pack(fill="both", expand=True)
+
+    def set_text(self, entry: tkinter.Label, text: str):
+        entry.delete(0, tkinter.END)
+        entry.insert(0, text)
+
+    def show_gui(self):
+        self.create_gui()
+        self.window.mainloop()
+
+    def select_file(self):
+        self.set_text(self.source_pdf_entry, filedialog.askopenfilename())
+
