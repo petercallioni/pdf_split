@@ -3,7 +3,7 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 
 class PdfSplitter:
 
-    def __init__(self, source_pdf_path):
+    def __init__(self, source_pdf_path: str):
         self.source_pdf_path = source_pdf_path
 
     def split(self, pdf_output_dict: dict):
