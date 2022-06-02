@@ -122,7 +122,7 @@ class GUI:
         self.finished_dialog()
 
 
-def show_message(title: str, message: str, style: int):
+def show_message(title: str, message: str, style: int) -> ctypes.windll.user32.MessageBoxW:
     """
     Shows a message box using the standard windows dll.
     :param title:
