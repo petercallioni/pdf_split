@@ -1,13 +1,11 @@
 import ctypes
-import os
 import tkinter
 from tkinter import filedialog
-
-from pdf_split import PdfSplitter
 
 
 class GUI:
     def __init__(self):
+        self.gui_controller = None
         self.execute_button = None
         self.page_count_entry = None
         self.record_count_entry = None
@@ -86,7 +84,7 @@ class GUI:
     def controls_frame(self, tk: tkinter.Tk) -> tkinter.Frame:
         controls_frame = tkinter.Frame(tk, bg="green", padx=5, pady=5)
 
-        self.execute_button = tkinter.Button(master=controls_frame, text="Split", command=self.execute_split)
+        self.execute_button = tkinter.Button(master=controls_frame, text="Split", command=self.execute_split_click)
         self.execute_button.grid(column=0, row=0)
 
         controls_frame.grid_columnconfigure(0, weight=0, pad=5)
@@ -106,35 +104,10 @@ class GUI:
         self.set_text(self.destination_pdf_entry, filedialog.askdirectory())
 
     def finished_dialog(self):
-        show_message("Done.", "Done.", 0)
+        self.gui_controller.show_message("Done.", "Done.", 0)
 
-    def execute_split(self):
-        pdfSplitter = PdfSplitter(self.source_pdf_entry.get())
-
-        pdf_output_dict = {}
-        for i in range(1, int(self.record_count_entry.get()) + 1):
-            page_end = i * int(self.page_count_entry.get())
-            output_path = outputFilename = os.path.join(self.destination_pdf_entry.get(), f"PDF_{i}.pdf")
-            pdf_output_dict[output_path] = range(page_end - int(self.page_count_entry.get()), page_end)
-
-        pdfSplitter.split(pdf_output_dict)
+    def execute_split_click(self):
+        self.gui_controller.execute_split(self.record_count_entry.get(), self.page_count_entry.get(),
+                                          self.source_pdf_entry.get(), self.destination_pdf_entry.get())
 
         self.finished_dialog()
-
-
-def show_message(title: str, message: str, style: int) -> ctypes.windll.user32.MessageBoxW:
-    """
-    Shows a message box using the standard windows dll.
-    :param title:
-    :param message:
-    :param style: Styles:
-    0 : OK
-    1 : OK | Cancel
-    2 : Abort | Retry | Ignore
-    3 : Yes | No | Cancel
-    4 : Yes | No
-    5 : Retry | Cancel
-    6 : Cancel | Try Again | Continue
-    :return:
-    """
-    return ctypes.windll.user32.MessageBoxW(0, message, title, style)

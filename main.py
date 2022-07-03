@@ -1,3 +1,4 @@
+from gui_controller import GuiController
 from pdf_split import PdfSplitter
 from gui import GUI
 
@@ -18,7 +19,12 @@ def main():
 
 
 def main_gui():
+    gui_controller = GuiController()
     gui = GUI()
+
+    gui.gui_controller = gui_controller
+    gui_controller.gui = gui
+
     gui.show_gui()
 
 
