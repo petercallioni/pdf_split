@@ -3,15 +3,13 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 
 class PdfSplitter:
 
-    def __init__(self, source_pdf_path: str):
-        self.source_pdf_path = source_pdf_path
-
-    def split(self, pdf_output_dict: dict):
+    def split(self, source_pdf_path: str, pdf_output_dict: dict):
         """
+        :param source_pdf_path: the path of the original file to be split
         :param pdf_output_dict: a dictionary [string, int()] of the output file paths and what pages they should contain
         """
 
-        source_pdf_reader = PdfFileReader(open(self.source_pdf_path, "rb"), strict=False)
+        source_pdf_reader = PdfFileReader(open(source_pdf_path, "rb"), strict=False)
 
         for key, value in pdf_output_dict.items():
             output = PdfFileWriter()
